@@ -1,11 +1,22 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QFontDatabase>
+#include "backend.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    Backend backend;
+
     QQmlApplicationEngine engine;
+    /*const QString fontPath = QCoreApplication::applicationDirPath() + "/fonts/";
+    QFontDatabase::addApplicationFont(fontPath + "Roboto-Regular.ttf");
+
+    app.setFont(QFont("Roboto"));*/
+
+    engine.rootContext()->setContextProperty("backend",&backend);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,

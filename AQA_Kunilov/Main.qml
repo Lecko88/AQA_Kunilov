@@ -9,7 +9,22 @@ ApplicationWindow {
     title: qsTr("Asynchronous Qt Assignment")
     color: Theme.background
 
-    property bool therapyRunning: false
+    property bool therapyRunning: backend.therapyRunning
+
+    Connections  {
+        target: backend
+
+        function onTherapyRunningChanged() {
+            if(backend.therapyRunning)
+            {
+                lungs.start()
+            }
+            else
+            {
+                lungs.stop()
+            }
+        }
+    }
 
     Item {
         id: leftPanel
@@ -52,9 +67,37 @@ ApplicationWindow {
             Item { //Will be clipped off when therapy starts
                 id: patientParameters
                 Layout.fillWidth: true
-                height: 280 //here will be  some logic
+                height: therapyRunning?0:280
                 Layout.preferredHeight: height
                 Layout.alignment: Qt.AlignTop
+                clip: true
+                opacity: therapyRunning?0:1
+
+                Behavior on height {
+                    NumberAnimation {
+                        duration: 1000
+                        easing.type: Easing.Bezier
+                    }
+                }
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 1000
+                        easing.type: Easing.Bezier
+
+                        onStarted: {//make block really unvisible, not just transparent. Can be important, when we set keyboard focus
+                            if(!therapyRunning)
+                                patientParameters.visible = true
+                        }
+
+                        onStopped: {
+                            if(therapyRunning && patientParameters.opacity === 0)
+                            {
+                                patientParameters.visible = false
+                            }
+                        }
+                    }
+                }
 
                 ColumnLayout {
                     id: patientParametersContent
@@ -82,6 +125,10 @@ ApplicationWindow {
                                     required property var modelData
 
                                     iconSource: modelData.icon
+
+                                    onClicked: {
+                                        backend.selectPlanet(modelData.name)
+                                    }
                                 }
                             }
                         }
@@ -100,25 +147,50 @@ ApplicationWindow {
                         RowLayout {
                             spacing: 10
                             Repeater {
-                                model:IconSets.ageRepeaterModel["Venus"] //here will be some logic
+                                model:IconSets.ageRepeaterModel[backend.currentPlanetId]
                                 delegate: RoundedButton {
                                     required property int index //not sure I will use it for now, but VERY important for future Squish testing
                                     required property var modelData
 
                                     iconSource: modelData.iconSet.icon
+
+                                    onClicked: {
+                                        backend.selectAge(modelData.name)
+                                    }
                                 }
                             }
                         }
                     }
 
-                    RoundedTextButton {
-                        id: startButton
-                        labelText: therapyRunning?qsTr("Stop"):qsTr("Start healing")
-                        iconSource: therapyRunning?"icons/hand.svg":"icons/play.svg"
-                        Layout.alignment: Qt.AlignTop
+
+
+
+                }
+            }
+            RoundedTextButton {
+                id: startButton
+                labelText: therapyRunning?qsTr("Stop"):qsTr("Start healing")
+                iconSource: therapyRunning?"icons/hand.svg":"icons/play.svg"
+                Layout.alignment: Qt.AlignTop
+                z:1
+                width: therapyRunning?150:200
+
+                Behavior on width {
+                    NumberAnimation {
+                        duration: 1000
+                        easing.type: Easing.Bezier
                     }
+                }
 
-
+                onClicked: {
+                    if(therapyRunning)
+                    {
+                        backend.stopHealing()
+                    }
+                    else
+                    {
+                        backend.startHealing()
+                    }
                 }
             }
         }
@@ -127,7 +199,7 @@ ApplicationWindow {
 
     PulsingImage {
         id: lungs
-        source: "icons/lungs.svg" //from model later
+        source: IconSets.iconSets[backend.currentPlanetId][backend.currentAge].bgImage
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.leftMargin: -200
@@ -136,12 +208,16 @@ ApplicationWindow {
         width: 500
         height: 500
 
-        color: "red" //from model later
+        maxSize:500
+        minSize:400
+
+        color: IconSets.iconSets[backend.currentPlanetId][backend.currentAge].bgColor
+        z:-1
     }
 
     ColorVectorImage {
         id: avatar
-        source: "icons/person.svg" //from model later
+        source: IconSets.iconSets[backend.currentPlanetId][backend.currentAge].icon
         anchors.top: parent.top
         anchors.right: parent.right
         anchors.topMargin: 50

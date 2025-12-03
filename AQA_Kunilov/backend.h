@@ -14,7 +14,7 @@ public:
     explicit Backend(QObject *parent = nullptr);
 
     QString currentPlanetId() const {return m_currentPlanetId;}
-    QString currentAgeId() const {return m_currentAge;}
+    QString currentAge() const {return m_currentAge;}
     bool therapyRunning() const {return m_therapyRunning;}
 
     Q_INVOKABLE void selectPlanet(const QString& planetId);

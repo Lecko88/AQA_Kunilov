@@ -38,7 +38,7 @@ QtObject {
             },
             "Senior": {
                 icon: "icons/person-cane.svg",
-                bgImage: "icons/person-cane.svg",
+                bgImage: "icons/leaf.svg",
                 bgColor: "#DAA520"//I have noticed, that only this picture  has different colors in day and night mode. Will implement if have enough time
             }
         },
@@ -60,7 +60,7 @@ QtObject {
             },
             "Senior": {
                 icon: "icons/person-cane.svg",
-                bgImage: "icons/person-cane.svg",
+                bgImage: "icons/leaf.svg",
                 bgColor: "#DAA520"//I have noticed, that only this picture  has different colors in day and night mode. Will implement if have enough time
             }
         }

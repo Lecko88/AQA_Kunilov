@@ -9,7 +9,7 @@ Rectangle {
     property string labelText
     property int iconSize: 40
 
-    width: 200
+
     height: 72
 
     signal clicked
