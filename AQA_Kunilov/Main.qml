@@ -220,11 +220,39 @@ ApplicationWindow {
         source: IconSets.iconSets[backend.currentPlanetId][backend.currentAge].icon
         anchors.top: parent.top
         anchors.right: parent.right
-        anchors.topMargin: 50
-        anchors.rightMargin: 50
+        anchors.topMargin: therapyRunning?120:50
+        anchors.rightMargin: therapyRunning?120:50
 
-        width: 120
-        height: 120
+        width: therapyRunning?200:120
+        height: therapyRunning?200:120
         color: Theme.foreground
+
+        Behavior on height {
+            NumberAnimation {
+                duration: 1000
+                easing.type: Easing.Bezier
+            }
+        }
+
+        Behavior on width {
+            NumberAnimation {
+                duration: 1000
+                easing.type: Easing.Bezier
+            }
+        }
+
+        Behavior on anchors.topMargin {
+            NumberAnimation {
+                duration: 1000
+                easing.type: Easing.Bezier
+            }
+        }
+
+        Behavior on anchors.rightMargin {
+            NumberAnimation {
+                duration: 1000
+                easing.type: Easing.Bezier
+            }
+        }
     }
 }
