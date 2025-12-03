@@ -8,6 +8,8 @@ I didn’t install the proper font.
 
 As external sources I used the official Qt documentation available in Qt Explorer, Qt 6 C++ GUI Programming Cookbook (Kindle Edition), and my notes from previous work with Qt and QML. I used https://fontawesome.com/ to find the necessary icons. I also used Google Search to learn more about fonts in QML applications. No AI tools were used.
 
+The video demonstrating the process can be downloaded here: https://drive.google.com/file/d/1YI9WgcFa4nVh4wLVzeKuorHm9GaLuStI/view?usp=sharing
+
 What I enjoyed
 - Working on something that feels like a real medical device application.
 - Having to apply a wide range of QML skills — from layouts to animations.
